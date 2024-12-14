@@ -1,0 +1,254 @@
+Name:<input><input><br>
+◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘ <br>
+Einser:<input><input> <br>
+zweier:<input><input><br>
+Dreier:<input><input><br>
+Vierer: <input><input><br>
+Fünfer: <input><input><br>
+Sechser:<input><input><br> <br>
+Gesamt Oben: <input><input><br>
+Bonus(35) <input><input><br>
+Gesamt:<input><input><br>
+◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘<br>
+3er Pasch:<input><input> <br>
+4er Pasch:<input><input> <br>
+Full house (25):<input><input> <br>
+kleine Straße (30):<input><input> <br>
+große Straße (40):<input><input><br>
+Kniffel:<input><input><br>
+Chance:<input><input> <br>
+◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘ <br>
+gesamt Unten: <input><input><br>
+gesamt Oben:<input><input><br>
+Gesamtpunktzahl:<input><input><br> <br><br><br><br>
+Bitte hatt Samuel Gewonnen <br> <br><br>
+Gewinner:<input><input><br> <br><br><br><br><!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Würfeln</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 10px;
+            font-size: 36px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dice:hover {
+            background-color: #e0e0e0;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .input-container {
+            margin-top: 20px;
+        }
+
+        .calculator-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .calculator input {
+            grid-column: span 4;
+            font-size: 24px;
+            padding: 10px;
+            text-align: right;
+        }
+
+        .calculator button {
+            padding: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .calculator button:hover {
+            background-color: #ddd;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Würfeln</h1>
+    <div class="dice-container">
+        <div class="dice" id="dice1" onclick="keepDice(1)">1</div>
+        <div class="dice" id="dice2" onclick="keepDice(2)">2</div>
+        <div class="dice" id="dice3" onclick="keepDice(3)">3</div>
+        <div class="dice" id="dice4" onclick="keepDice(4)">4</div>
+        <div class="dice" id="dice5" onclick="keepDice(5)">5</div>
+    </div>
+
+    <button onclick="rollDice()" id="rollButton">Würfeln</button>
+
+    <div class="input-container hidden" id="passwordInputContainer">
+        <input type="password" id="passwordInput" placeholder="Passwort eingeben">
+        <button onclick="checkPassword()">Bestätigen</button>
+    </div>
+
+    <script>
+        const password = "Samuel"; // Das Passwort für weitere Würfe
+        let keptDice = [false, false, false, false, false];
+        let rollsSincePassword = 0; // Zähler für die Würfe seit dem letzten Passwort
+
+        // Funktion zum Würfeln
+        function rollDice() {
+            if (rollsSincePassword >= 3) {
+                alert("Du hast 3 Runden geworfen. Bitte gib das Passwort ein, um weiter zu würfeln.");
+                showPasswordInput();
+                return;
+            }
+
+            for (let i = 0; i < 5; i++) {
+                if (!keptDice[i]) {
+                    const newValue = Math.floor(Math.random() * 6) + 1;
+                    document.getElementById('dice' + (i + 1)).textContent = newValue;
+                }
+            }
+
+            rollsSincePassword++;
+        }
+
+        // Funktion um einen Würfel zu "behalten"
+        function keepDice(diceNumber) {
+            keptDice[diceNumber - 1] = !keptDice[diceNumber - 1];
+            const diceElement = document.getElementById('dice' + diceNumber);
+            if (keptDice[diceNumber - 1]) {
+                diceElement.style.backgroundColor = "#c7f7c2"; // grün für behalten
+            } else {
+                diceElement.style.backgroundColor = "#fff"; // zurück zu normal
+            }
+        }
+
+        // Funktion zur Passwort-Eingabe
+        function showPasswordInput() {
+            document.getElementById("passwordInputContainer").classList.remove("hidden");
+            document.getElementById("passwordInput").focus();
+        }
+
+        // Passwort überprüfen
+        function checkPassword() {
+            const enteredPassword = document.getElementById("passwordInput").value;
+            if (enteredPassword === password) {
+                alert("Passwort korrekt! Du hast jetzt wieder 3 Runden.");
+                rollsSincePassword = 0; // Zurücksetzen der Zähler
+                document.getElementById("passwordInputContainer").classList.add("hidden");
+            } else {
+                alert("Falsches Passwort. Versuch es nochmal.");
+            }
+        }
+    </script>
+
+    <!-- Taschenrechner -->
+    <div class="calculator-container">
+        <h2>Taschenrechner</h2>
+        <div class="calculator">
+            <input type="text" id="calculatorDisplay" disabled />
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendOperator('+')">+</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendOperator('-')">-</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendOperator('*')">*</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="appendOperator('/')">/</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+
+        // Zeigt die Zahlen und Operatoren im Display an
+        function appendNumber(number) {
+            currentInput += number;
+            document.getElementById("calculatorDisplay").value = currentInput;
+        }
+
+        // Fügt einen Operator zum aktuellen Input hinzu
+        function appendOperator(operator) {
+            currentInput += ' ' + operator + ' ';
+            document.getElementById("calculatorDisplay").value = currentInput;
+        }
+
+        // Berechnet den Ausdruck
+        function calculate() {
+            try {
+                const result = eval(currentInput);
+                currentInput = result.toString();
+                document.getElementById("calculatorDisplay").value = currentInput;
+            } catch (error) {
+                document.getElementById("calculatorDisplay").value = "Fehler";
+                currentInput = '';
+            }
+        }
+
+        // Löscht das Display
+        function clearDisplay() {
+            currentInput = '';
+            document.getElementById("calculatorDisplay").value = '';
+        }
+    </script>
+
+</body>
+</html>
+<a href="über Mich.html">Über denn Ersteller</a>
